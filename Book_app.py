@@ -10,7 +10,7 @@ DATASET= pd.read_excel('DATA PENELITIAN4.xlsx')
 DATASET.columns=['no', 'Transaksi', 'Judul', 'Nama_Anggota', 'Tahun_Masuk', 'Fakultas', 'Hari']
 
 Judul_Buku= pd.read_excel('JUDUL BUKU.xlsx')
-Judul=Judul_Buku['Judul'].values.tolist()
+Judul1=Judul_Buku['Judul'].values.tolist()
 
 import pandas as pd
 
@@ -27,7 +27,7 @@ def get_data(Tahun_Masuk= '', Fakultas= '', Hari= ''):
     return filtered if filtered.shape[0] else "No Result!"
 
 def User_input_features():
-    Judul= st.selectbox("Judul", Judul)
+    Judul= st.selectbox("Judul", Judul1)
     Tahun_Masuk= st.selectbox("Tahun_Masuk", ["2014", "2015", "2016", "2017", "2018", "2019", "2020", "2021", "2022","2023"])
     Fakultas= st.selectbox("Fakultas", ["FIP", "FBS", "FMIPA", "FIS", "FT", "FIK", "FPP", "FPS", "OTHERS"])
     Hari= st.select_slider("Hari", ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"], value= "Saturday")
@@ -36,7 +36,7 @@ def User_input_features():
 
 DATASET['Tahun_Masuk'] = DATASET['Tahun_Masuk'].astype(str)
 
-Judul, Tahun_Masuk, Fakultas, Hari= User_input_features()
+Judul, Tahun_Masuk, Fakultas, Hari = User_input_features()
 
 DATA= get_data(Tahun_Masuk, Fakultas, Hari)
 
