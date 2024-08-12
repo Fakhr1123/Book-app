@@ -59,11 +59,11 @@ if type(DATA)!= type("No Result"):
     rules1.sort_values('confidence', ascending= False, inplace= True)
 
 def parse_list(x):
-    x= list(x)
-    if len(x)== 1:
-        return x[0]
-    elif len(x)> 1:
-        return ", ".join(x)
+    if len(x) == 1:
+        return str(x[0])
+    elif len(x) > 1:
+        return ", ".join(map(str, x))
+
 
 def return_item_df(item_antecedents):
     DATA= rules1[["antecedents", "consequents"]].copy()
