@@ -27,16 +27,16 @@ def get_data(Tahun_Masuk= '', Fakultas= '', Hari= ''):
     return filtered if filtered.shape[0] else "No Result!"
 
 def User_input_features():
-    Judul= st.selectbox("Judul", Judul1)
+    Item= st.selectbox("Item", Judul1)
     Tahun_Masuk= st.selectbox("Tahun_Masuk", ["2014", "2015", "2016", "2017", "2018", "2019", "2020", "2021", "2022","2023"])
     Fakultas= st.selectbox("Fakultas", ["FIP", "FBS", "FMIPA", "FIS", "FT", "FIK", "FPP", "FPS", "OTHERS"])
     Hari= st.select_slider("Hari", ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"], value= "Saturday")
 
-    return Judul, Tahun_Masuk, Fakultas, Hari
+    return Item, Tahun_Masuk, Fakultas, Hari
 
 DATASET['Tahun_Masuk'] = DATASET['Tahun_Masuk'].astype(str)
 
-Judul, Tahun_Masuk, Fakultas, Hari = User_input_features()
+Item, Tahun_Masuk, Fakultas, Hari = User_input_features()
 
 DATA= get_data(Tahun_Masuk, Fakultas, Hari)
 
@@ -48,14 +48,16 @@ def encode(x):
         return 1
 
 if type(DATA)!= type("No Result"):
-    item_count1= DATA.groupby(["Transaksi", "Judul"])["Judul"].count().reset_index(name="Jumlah")
-    item_count_pivot = item_count1.pivot_table(index='Transaksi', columns='Judul', values='Jumlah', aggfunc='sum').fillna(0)
+    item_count1= DATA.groupby(["Transaksi", "Item"])["Item"].count().reset_index(name="Jumlah")
+    item_count_pivot = item_count1.pivot_table(index='Transaksi', columns='Item', values='Jumlah', aggfunc='sum').fillna(0)
     item_count_pivot= item_count_pivot.applymap(encode) 
     
     support= 0.0009
     frequent_items= apriori(item_count_pivot, min_support= support, use_colnames=True)
+
     metric= "lift"
     min_threshold= 1
+
     rules1= association_rules(frequent_items, metric= metric, min_threshold= min_threshold)[["antecedents", "consequents", "support", "confidence", "lift"]]
     rules1.sort_values('confidence', ascending= False, inplace= True)
 
@@ -66,7 +68,7 @@ def parse_list(x):
     elif len(x)> 1:
         return ", ".join(x)
 
-def return_judul(item_antecedents):
+def return_item_df(item_antecedents):
     DATA= rules1[["antecedents", "consequents"]].copy()
 
     DATA["antecedents"]= DATA["antecedents"].apply(parse_list)
@@ -76,4 +78,4 @@ def return_judul(item_antecedents):
 
 if type(DATA)!= type("No Result!"):
     st.markdown("HASIL REKOMENDASI : ")
-    st.success(f"Jika konsumen membeli **{Judul}**, maka meminjam judul **{return_judul(Judul)[1]}** secara bersamaan")
+    st.success(f"Jika konsumen membeli **{Item}**, maka meminjam judul **{return_item_df(Item)[1]}** secara bersamaan")
