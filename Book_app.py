@@ -48,8 +48,8 @@ def encode(x):
         return 1
 
 if type(DATA)!= type("No Result"):
-    item_count1= DATA.groupby(["Transaksi", "Item"])["Item"].count().reset_index(name="Jumlah")
-    item_count_pivot = item_count1.pivot_table(index='Transaksi', columns='Item', values='Jumlah', aggfunc='sum').fillna(0)
+    item_count1= DATA.groupby(["Transaksi", "Judul"])["Judul"].count().reset_index(name="Jumlah")
+    item_count_pivot = item_count1.pivot_table(index='Transaksi', columns='Judul', values='Jumlah', aggfunc='sum').fillna(0)
     item_count_pivot= item_count_pivot.applymap(encode) 
     
     support= 0.0009
