@@ -6,3 +6,4 @@ seaborn==0.13.0
 mlxtend==0.23.0
 DateTime==5.3
 mlxtend
+openpyxl 
