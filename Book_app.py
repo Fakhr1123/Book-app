@@ -18,11 +18,11 @@ st.title("Association Rules dengan algoritma Apriori")
 
 #kelompok inputan
 def get_data(Tahun_Masuk= '', Fakultas= '', Hari= ''):
-    data= DATASET.copy()
-    filtered= data.loc[
-        (data["Tahun_Masuk"].str.contains(Tahun_Masuk))&
-        (data["Fakultas"].str.contains(Fakultas))&
-        (data["Hari"].str.contains(Hari))
+    DATASET= DATASET.copy()
+    filtered= DATASET.loc[
+        (DATASET["Tahun_Masuk"].str.contains(Tahun_Masuk))&
+        (DATASET["Fakultas"].str.contains(Fakultas))&
+        (DATASET["Hari"].str.contains(Hari))
     ]
     return filtered if filtered.shape[0] else "No Result!"
 
@@ -65,7 +65,7 @@ def parse_list(x):
     elif len(x)> 1:
         return ", ".join(x)
 
-def return_item_data_bread(item_antecedents):
+def return_judul(item_antecedents):
     data= rules1[["antecedents", "consequents"]].copy()
 
     data["antecedents"]= data["antecedents"].apply(parse_list)
@@ -75,4 +75,4 @@ def return_item_data_bread(item_antecedents):
 
 if type(data)!= type("No Result!"):
     st.markdown("HASIL REKOMENDASI : ")
-    st.success(f"Jika konsumen membeli **{Judul}**, maka meminjam judul **{return_item_data_bread(Judul)[1]}** secara bersamaan")
+    st.success(f"Jika konsumen membeli **{Judul}**, maka meminjam judul **{return_judul(Judul)[1]}** secara bersamaan")
