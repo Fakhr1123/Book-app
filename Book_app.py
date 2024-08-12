@@ -9,11 +9,10 @@ from datetime import datetime
 DATASET= pd.read_excel('DATA PENELITIAN4.xlsx')
 DATASET.columns=['no', 'Transaksi', 'Judul', 'Nama_Anggota', 'Tahun_Masuk', 'Fakultas', 'Hari']
 
-import pandas as pd
-
 st.title("Association Rules dengan algoritma Apriori")
 
 #kelompok inputan
+DATASET['Tahun_Masuk'] = DATASET['Tahun_Masuk'].astype(str)
 def get_data(Tahun_Masuk= '', Fakultas= '', Hari= ''):
     DATA= DATASET.copy()
     filtered= DATA.loc[
@@ -34,8 +33,6 @@ def User_input_features():
 
     return Item, Tahun_Masuk, Fakultas, Hari
 
-DATASET['Tahun_Masuk'] = DATASET['Tahun_Masuk'].astype(str)
-
 Judul, Tahun_Masuk, Fakultas, Hari = User_input_features()
 
 DATA= get_data(Tahun_Masuk, Fakultas, Hari)
@@ -50,7 +47,7 @@ def encode(x):
 if type(DATA)!= type("No Result"):
     item_count1= DATA.groupby(["Transaksi", "Judul"])["Judul"].count().reset_index(name="Jumlah")
     item_count_pivot = item_count1.pivot_table(index='Transaksi', columns='Judul', values='Jumlah', aggfunc='sum').fillna(0)
-    item_count_pivot= item_count_pivot.applymap(encode) 
+    item_count_pivot= item_count_pivot.map(encode) 
     
     support= 0.0009
     frequent_items= apriori(item_count_pivot, min_support= support, use_colnames=True)
@@ -78,4 +75,4 @@ def return_item_df(item_antecedents):
 
 if type(DATA)!= type("No Result!"):
     st.markdown("HASIL REKOMENDASI : ")
-    st.success(f"Jika konsumen membeli **{Judul}**, maka meminjam judul **{return_item_df(Judul)[1]}** secara bersamaan")
+    st.success(f"Jika konsumen meminjam **{Judul}**, maka meminjam judul **{return_item_df(Judul)[1]}** secara bersamaan")
