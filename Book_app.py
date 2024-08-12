@@ -9,9 +9,6 @@ from datetime import datetime
 DATASET= pd.read_excel('DATA PENELITIAN4.xlsx')
 DATASET.columns=['no', 'Transaksi', 'Judul', 'Nama_Anggota', 'Tahun_Masuk', 'Fakultas', 'Hari']
 
-Judul_Buku= pd.read_excel('JUDUL BUKU.xlsx')
-Judul1=Judul_Buku['Judul'].values.tolist()
-
 import pandas as pd
 
 st.title("Association Rules dengan algoritma Apriori")
@@ -26,8 +23,11 @@ def get_data(Tahun_Masuk= '', Fakultas= '', Hari= ''):
     ]
     return filtered if filtered.shape[0] else "No Result!"
 
+Judul_Buku= pd.read_excel('JUDUL BUKU.xlsx')
+Item_options=Judul_Buku['Judul'].values.tolist()
+
 def User_input_features():
-    Item= st.selectbox("Item", Judul1)
+    Item= st.selectbox("Item", Item_options)
     Tahun_Masuk= st.selectbox("Tahun_Masuk", ["2014", "2015", "2016", "2017", "2018", "2019", "2020", "2021", "2022","2023"])
     Fakultas= st.selectbox("Fakultas", ["FIP", "FBS", "FMIPA", "FIS", "FT", "FIK", "FPP", "FPS", "OTHERS"])
     Hari= st.select_slider("Hari", ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"], value= "Saturday")
@@ -36,7 +36,7 @@ def User_input_features():
 
 DATASET['Tahun_Masuk'] = DATASET['Tahun_Masuk'].astype(str)
 
-Item, Tahun_Masuk, Fakultas, Hari = User_input_features()
+Judul, Tahun_Masuk, Fakultas, Hari = User_input_features()
 
 DATA= get_data(Tahun_Masuk, Fakultas, Hari)
 
@@ -78,4 +78,4 @@ def return_item_df(item_antecedents):
 
 if type(DATA)!= type("No Result!"):
     st.markdown("HASIL REKOMENDASI : ")
-    st.success(f"Jika konsumen membeli **{Item}**, maka meminjam judul **{return_item_df(Item)[1]}** secara bersamaan")
+    st.success(f"Jika konsumen membeli **{Judul}**, maka meminjam judul **{return_item_df(Judul)[1]}** secara bersamaan")
