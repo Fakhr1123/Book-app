@@ -1,0 +1,8 @@
+numpy
+pandas
+streamlit
+matplotlib==3.8.2
+seaborn==0.13.0
+mlxtend==0.23.0
+DateTime==5.3
+yfinance==0.2.33
