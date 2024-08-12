@@ -18,11 +18,11 @@ st.title("Association Rules dengan algoritma Apriori")
 
 #kelompok inputan
 def get_data(Tahun_Masuk= '', Fakultas= '', Hari= ''):
-    DATASET= DATASET.copy()
-    filtered= DATASET.loc[
-        (DATASET["Tahun_Masuk"].str.contains(Tahun_Masuk))&
-        (DATASET["Fakultas"].str.contains(Fakultas))&
-        (DATASET["Hari"].str.contains(Hari))
+    DATA= DATASET.copy()
+    filtered= DATA.loc[
+        (DATA["Tahun_Masuk"].str.contains(Tahun_Masuk))&
+        (DATA["Fakultas"].str.contains(Fakultas))&
+        (DATA["Hari"].str.contains(Hari))
     ]
     return filtered if filtered.shape[0] else "No Result!"
 
@@ -37,7 +37,7 @@ def User_input_features():
 DATASET['Tahun_Masuk'] = DATASET['Tahun_Masuk'].astype(str)
 Judul, Tahun_Masuk, Fakultas, Hari= User_input_features()
 
-DATASET= get_data(Tahun_Masuk, Fakultas, Hari)
+DATA= get_data(Tahun_Masuk, Fakultas, Hari)
 
 
 def encode(x):
@@ -46,8 +46,8 @@ def encode(x):
     elif x >= 1:
         return 1
 
-if type(DATASET)!= type("No Result"):
-    item_count1= DATASET.groupby(["Transaksi", "Judul"])["Judul"].count().reset_index(name="Jumlah")
+if type(DATA)!= type("No Result"):
+    item_count1= DATA.groupby(["Transaksi", "Judul"])["Judul"].count().reset_index(name="Jumlah")
     item_count_pivot = item_count1.pivot_table(index='Transaksi', columns='Judul', values='Jumlah', aggfunc='sum').fillna(0)
     item_count_pivot= item_count_pivot.applymap(encode) 
     
@@ -66,13 +66,13 @@ def parse_list(x):
         return ", ".join(x)
 
 def return_judul(item_antecedents):
-    data= rules1[["antecedents", "consequents"]].copy()
+    DATA= rules1[["antecedents", "consequents"]].copy()
 
-    data["antecedents"]= data["antecedents"].apply(parse_list)
-    data["consequents"]= data["consequents"].apply(parse_list)
+    DATA["antecedents"]= DATA["antecedents"].apply(parse_list)
+    DATA["consequents"]= DATA["consequents"].apply(parse_list)
 
-    return list(data.loc[data["antecedents"]== item_antecedents].iloc[0,:])
+    return list(DATA.loc[DATA["antecedents"]== item_antecedents].iloc[0,:])
 
-if type(data)!= type("No Result!"):
+if type(DATA)!= type("No Result!"):
     st.markdown("HASIL REKOMENDASI : ")
     st.success(f"Jika konsumen membeli **{Judul}**, maka meminjam judul **{return_judul(Judul)[1]}** secara bersamaan")
