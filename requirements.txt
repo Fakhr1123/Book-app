@@ -1,9 +1,9 @@
 numpy
 pandas
-streamlit==1.37.1
-matplotlib==3.8.2
-seaborn==0.13.0
-mlxtend==0.23.0
-DateTime==5.3
+streamlit
+matplotlib
+seaborn
+mlxtend
+DateTime
 mlxtend
 openpyxl 
