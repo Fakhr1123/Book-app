@@ -1,9 +1,10 @@
 numpy
 pandas
-streamlit
+streamlit>=1.40.0
 matplotlib
 seaborn
 mlxtend
 DateTime
 mlxtend
 openpyxl 
+
